@@ -29,7 +29,7 @@ import Foundation
 import UIKit
 
 public extension UIColor {
-    public convenience init(rgba: UInt) {
+    convenience init(rgba: UInt) {
         let rgba  = min(rgba, 0xFFFFFFFF)
         let red   = CGFloat((rgba & 0xFF000000) >> 24) / 255.0
         let green = CGFloat((rgba & 0x00FF0000) >> 16) / 255.0
@@ -45,10 +45,10 @@ public struct MaterialColor: Hashable {
     public let color: UIColor
     public let textColor: UIColor
     
-    public var hashValue: Int {
-        return name.hashValue + color.hashValue + textColor.hashValue
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(name.hashValue + color.hashValue + textColor.hashValue)
     }
-    
+        
     internal init(name: String, color: UIColor, textColor: UIColor) {
         self.name = name
         self.color = color
@@ -68,17 +68,17 @@ public func ==(lhs: MaterialColor, rhs: MaterialColor) -> Bool {
 
 open class MaterialColorGroup: Hashable, Collection {
 
-    open let name: String
-    open let P50:  MaterialColor
-    open let P100: MaterialColor
-    open let P200: MaterialColor
-    open let P300: MaterialColor
-    open let P400: MaterialColor
-    open let P500: MaterialColor
-    open let P600: MaterialColor
-    open let P700: MaterialColor
-    open let P800: MaterialColor
-    open let P900: MaterialColor
+    public let name: String
+    public let P50:  MaterialColor
+    public let P100: MaterialColor
+    public let P200: MaterialColor
+    public let P300: MaterialColor
+    public let P400: MaterialColor
+    public let P500: MaterialColor
+    public let P600: MaterialColor
+    public let P700: MaterialColor
+    public let P800: MaterialColor
+    public let P900: MaterialColor
     
     open var colors: [MaterialColor] {
         return [P50, P100, P200, P300, P400, P500, P600, P700, P800, P900]
@@ -87,10 +87,10 @@ open class MaterialColorGroup: Hashable, Collection {
         return P500
     }
     
-    open var hashValue: Int {
-        return name.hashValue + colors.reduce(0) { $0 + $1.hashValue }
+    open func hash(into hasher: inout Hasher) {
+        hasher.combine(name.hashValue + colors.reduce(0) { $0 + $1.hashValue })
     }
-    
+
     open var startIndex: Int {
         return 0
     }
@@ -152,10 +152,10 @@ public func ==(lhs: MaterialColorGroup, rhs: MaterialColorGroup) -> Bool {
 }
 
 open class MaterialColorGroupWithAccents: MaterialColorGroup {
-    open let A100: MaterialColor
-    open let A200: MaterialColor
-    open let A400: MaterialColor
-    open let A700: MaterialColor
+    public let A100: MaterialColor
+    public let A200: MaterialColor
+    public let A400: MaterialColor
+    public let A700: MaterialColor
     
     open var accents: [MaterialColor] {
         return [A100, A200, A400, A700]
